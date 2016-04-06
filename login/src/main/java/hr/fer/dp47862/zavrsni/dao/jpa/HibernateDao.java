@@ -53,53 +53,16 @@ public class HibernateDao implements DAO{
 	public void addUser(User user) {
 		persistModel(user);
 	}
-	
-	@Override
-	public void deactivateUser(int id){
-		User user = getUser(id);
-		user.setDeactivated(true);
-		updateModel(user);
-	}
-	
-	@Override
-	public void activateUser(int id){
-		User user = getUser(id);
-		user.setDeactivated(false);
-		updateModel(user);
-	}
 
 	@Override
 	public void removeUser(int userId) {
 		User user = getUser(userId);
-		for (User other: getAllUsers()){
-			other.getBlockedUsers().remove(user);
-		}
 		deleteModel(user);
 	}
 
 	@Override
 	public void updateUser(User user) {
 		updateModel(user);
-	}
-	
-	@Override
-	public void blockUser(int blockerId, int blockedId) {
-		User blocker = getUser(blockerId);
-		User blocked = getUser(blockedId);
-		blocker.getBlockedUsers().add(blocked);
-		updateModel(blocker);
-	}
-	
-	@Override
-	public void unblockUser(int blockerId, int blockedId) {
-		User blocker = getUser(blockerId);
-		blocker.getBlockedUsers().remove(getUser(blockedId));
-		updateModel(blocker);
-	}
-	
-	@Override
-	public Set<User> getBlockedUsers(int id) {
-		return getUser(id).getBlockedUsers();
 	}
 	
 	private void deleteModel(Model model){

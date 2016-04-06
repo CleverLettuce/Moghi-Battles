@@ -31,30 +31,17 @@ public class User extends Model {
 	public static final String Q_PARAM_EMAIL = "email_param";
 	public static final String Q_ALL = "User.findAll";
 	
-	private String firstName;
-	private String lastName;
 	@Column(nullable = false, unique = true)
 	private String username;
 	@Column(nullable = false)
 	private String passwordHash;
 	@Column(nullable = false, unique = true)
 	private String email;
-	@ManyToMany(fetch=FetchType.LAZY, cascade = {CascadeType.PERSIST})
-	@JoinTable(
-			   name = "user_blocks", 
-			   joinColumns = @JoinColumn(name = "user_id"), 
-			   inverseJoinColumns = @JoinColumn(name = "blocked_id")
-			 )
-	private Set<User> blockedUsers = new HashSet<User>();
 	private boolean deactivated = false;
 	private int battleCredits;
+	private int totalKills;
+	private int totalDeaths;
 	
-	public String getLastName() {
-		return lastName;
-	}
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
 	public String getUsername() {
 		return username;
 	}
@@ -73,18 +60,6 @@ public class User extends Model {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public String getFirstName() {
-		return firstName;
-	}
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-	public Set<User> getBlockedUsers() {
-		return blockedUsers;
-	}
-	public void setBlockedUsers(Set<User> blockedUsers) {
-		this.blockedUsers = blockedUsers;
-	}
 	public boolean isDeactivated() {
 		return deactivated;
 	}
@@ -96,6 +71,18 @@ public class User extends Model {
 	}
 	public void setBattleCredits(int battleCredits) {
 		this.battleCredits = battleCredits;
+	}
+	public int getTotalKills() {
+		return totalKills;
+	}
+	public void setTotalKills(int totalKills) {
+		this.totalKills = totalKills;
+	}
+	public int getTotalDeaths() {
+		return totalDeaths;
+	}
+	public void setTotalDeaths(int totalDeaths) {
+		this.totalDeaths = totalDeaths;
 	}
 	
 }

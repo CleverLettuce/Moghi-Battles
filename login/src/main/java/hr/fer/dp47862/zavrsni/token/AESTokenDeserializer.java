@@ -26,6 +26,7 @@ public class AESTokenDeserializer implements TokenDeserializer{
 		User user = new User();
 		try (Scanner sc = new Scanner(token)){
 			sc.useDelimiter(";");
+			user.setId(sc.nextInt());
 			user.setUsername(sc.next());
 			long currentTime = System.currentTimeMillis();
 			long startTime = Long.parseLong(sc.next());

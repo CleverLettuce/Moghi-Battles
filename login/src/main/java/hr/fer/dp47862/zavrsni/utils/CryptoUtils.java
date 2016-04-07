@@ -21,10 +21,15 @@ public class CryptoUtils {
 		try {
 			cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
 			cipher.init(Cipher.ENCRYPT_MODE, key);
-			encryptedText = Base64.encodeBase64String(cipher.doFinal(plaintext.getBytes(Charsets.UTF_8)));
+			encryptedText = new String(
+					Base64
+					.encodeBase64URLSafe(cipher
+							.doFinal(plaintext
+									.getBytes(Charsets.UTF_8))),
+					Charsets.UTF_8);
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException 
 				| IllegalBlockSizeException | BadPaddingException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		
 		return encryptedText;		
@@ -39,7 +44,7 @@ public class CryptoUtils {
 			decryptedText = new String(cipher.doFinal(Base64.decodeBase64(cyphertext)), Charsets.UTF_8);
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException 
 				| IllegalBlockSizeException | BadPaddingException e) {
-			e.printStackTrace();
+			// e.printStackTrace();
 		}
 		
 		return decryptedText;

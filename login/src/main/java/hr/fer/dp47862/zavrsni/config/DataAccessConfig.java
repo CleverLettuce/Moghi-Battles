@@ -72,7 +72,6 @@ public class DataAccessConfig {
 	    return new HibernateTransactionManager(sessionFactory);
 	}
 	
-	@Autowired
 	@Bean(name = "dao")
 	public DAO getDao() {
 	    return new HibernateDao();

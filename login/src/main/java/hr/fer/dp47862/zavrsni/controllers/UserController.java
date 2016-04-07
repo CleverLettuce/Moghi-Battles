@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import hr.fer.dp47862.zavrsni.models.User;
 import hr.fer.dp47862.zavrsni.response.Response;
@@ -12,6 +13,7 @@ import hr.fer.dp47862.zavrsni.response.StatusCodes;
 import hr.fer.dp47862.zavrsni.services.UserService;
 import hr.fer.dp47862.zavrsni.utils.HashUtils;
 
+@RestController
 public class UserController {
 	
 	@Autowired UserService userService;
@@ -52,7 +54,7 @@ public class UserController {
 
 	}
 	
-	@RequestMapping(value = "/token", method = RequestMethod.GET)
+	@RequestMapping(value = "/token-request-pun", method = RequestMethod.POST)
     public Response<String> getToken(
     		@RequestParam(value="username") String username,
     		@RequestParam(value="password") String password
@@ -72,6 +74,8 @@ public class UserController {
     		@RequestParam(value="username") String username,
     		@RequestParam(value="token") String token
     		) {
+		System.out.println(token);
+		
 		User userSearched = userService.getUser(username);
 		User userCurrent = userService.getUserFromToken(token);
 		

@@ -2,6 +2,7 @@ package hr.fer.dp47862.zavrsni.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import hr.fer.dp47862.zavrsni.dao.DAO;
 import hr.fer.dp47862.zavrsni.models.User;
@@ -11,6 +12,7 @@ import hr.fer.dp47862.zavrsni.token.TokenManager;
 import hr.fer.dp47862.zavrsni.utils.HashUtils;
 
 @Service
+@Transactional
 public class UserService {
 
 	@Autowired
@@ -38,7 +40,11 @@ public class UserService {
 	 * @throws InvalidTokenException if token is invalid
 	 */
 	public User getUserFromToken(String token){
-		return tokenManager.getUser(token);
+		try{
+			return tokenManager.getUser(token);
+		} catch (Exception e){
+			return null;
+		}
 	}
 	
 	public String getTokenForUser(User user){

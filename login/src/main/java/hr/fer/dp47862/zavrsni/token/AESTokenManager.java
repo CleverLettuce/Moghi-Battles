@@ -7,18 +7,12 @@ import org.springframework.stereotype.Component;
 
 import hr.fer.dp47862.zavrsni.models.User;
 
-@Component
 public class AESTokenManager implements TokenManager{
 
 	private TokenDeserializer deserializer;
 	private TokenSerializer serializer;
 	
-	@Autowired
-	private int duration;
-	@Autowired
-	private Key key;
-	
-	public AESTokenManager() {
+	public AESTokenManager(Key key, int duration) {
 		deserializer = new AESTokenDeserializer(key);
 		serializer = new AESTokenSerializer(key, duration);
 	}

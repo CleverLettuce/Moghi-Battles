@@ -24,6 +24,8 @@ public class AESTokenSerializer implements TokenSerializer {
 	
 	private String buildPlaintext(User user, long duration){
 		StringBuilder builder = new StringBuilder();
+		builder.append(user.getId());
+		builder.append(AESTokenConstants.DELIMITER);
 		builder.append(user.getUsername());
 		builder.append(AESTokenConstants.DELIMITER);
 		long currentTime = System.currentTimeMillis();

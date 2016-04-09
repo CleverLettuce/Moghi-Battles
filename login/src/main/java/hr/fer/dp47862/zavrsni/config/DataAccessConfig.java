@@ -20,7 +20,7 @@ import org.springframework.orm.hibernate4.LocalSessionFactoryBuilder;
 
 @Configuration
 @ComponentScan("hr.fer.dp47862.zavrsni")
-@PropertySource("classpath:data-access.properites")
+@PropertySource("classpath:data-access.properties")
 @EnableTransactionManagement
 public class DataAccessConfig {
 

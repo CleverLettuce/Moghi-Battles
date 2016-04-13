@@ -54,7 +54,7 @@ public class UserController {
 
 	}
 	
-	@RequestMapping(value = "/token-request-pun", method = RequestMethod.POST)
+	@RequestMapping(value = "/token-request-pun", method = RequestMethod.GET)
     public Response<String> getToken(
     		@RequestParam(value="username") String username,
     		@RequestParam(value="password") String password

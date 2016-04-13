@@ -1,5 +1,7 @@
 package hr.fer.dp47862.zavrsni.config;
 
+import java.sql.SQLException;
+
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
@@ -44,16 +46,28 @@ public class DataAccessConfig {
 	    BasicDataSource dataSource = new BasicDataSource();
 	    dataSource.setDriverClassName(env.getProperty(P_JDBC_DRIVER));
 	    dataSource.setUrl(env.getProperty(P_JDBC_URL));
-	    dataSource.setUsername(env.getProperty(P_JDBC_USER));
-	    dataSource.setPassword(env.getProperty(P_JDBC_PASS));
-	 
+	    String jdbcUser = env.getProperty(P_JDBC_USER);
+	    System.out.println("User: " + jdbcUser);
+	    if (jdbcUser != null){
+	    	dataSource.setUsername(jdbcUser);
+	    }
+	    String jdbcPass = env.getProperty(P_JDBC_PASS);
+	    if (jdbcPass != null){
+	    	dataSource.setPassword(jdbcPass);
+	    }
+	    
+	    try{
+	    	dataSource.getConnection();
+	    } catch (Exception e){
+	    	e.printStackTrace();
+	    }
+	    
 	    return dataSource;
 	}
 	
 	@Autowired
 	@Bean(name = "sessionFactory")
 	public SessionFactory getSessionFactory(DataSource dataSource) {
-	 
 	    LocalSessionFactoryBuilder sessionBuilder = new LocalSessionFactoryBuilder(dataSource);
 	    sessionBuilder.scanPackages("hr.fer.dp47862.zavrsni.models");
 	    sessionBuilder.setProperty("hibernate.hbm2ddl.auto", env.getProperty(P_HIB_AUTO));

@@ -2,3 +2,4 @@
 /.mvn/
 /.settings/
 /src/main/resources/data-access.properties
+/lib/

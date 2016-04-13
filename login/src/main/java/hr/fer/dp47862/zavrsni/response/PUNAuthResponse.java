@@ -1,15 +1,17 @@
 package hr.fer.dp47862.zavrsni.response;
 
+import java.util.Map;
+
 public class PUNAuthResponse implements Response<String>{
 
 	private int ResultCode;
 	private int UserId;
 	private String Nickname;
-	private String Data;
+	private Map<String, Object> Data;
 	
 	@Override
 	public String getData() {
-		return Data;
+		return (String) Data.get("token");
 	}
 	@Override
 	public int getStatus() {
@@ -17,7 +19,7 @@ public class PUNAuthResponse implements Response<String>{
 	}
 	@Override
 	public void setData(String token) {
-		Data = token;
+		Data.put("token", token);
 	}
 	
 	@Override

@@ -1,5 +1,6 @@
 package hr.fer.dp47862.zavrsni.response;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class PUNAuthResponse implements Response<String>{
@@ -7,7 +8,7 @@ public class PUNAuthResponse implements Response<String>{
 	private int ResultCode;
 	private int UserId;
 	private String Nickname;
-	private Map<String, Object> Data;
+	private Map<String, Object> Data = new HashMap<>();
 	
 	@Override
 	public String getData() {

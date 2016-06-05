@@ -1,6 +1,8 @@
 package hr.fer.dp47862.zavrsni.models;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -38,9 +40,8 @@ public class User extends Model {
 	@Column(nullable = false, unique = true)
 	private String email;
 	private boolean deactivated = false;
-	private int battleCredits;
-	private int totalKills;
-	private int totalDeaths;
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+	private List<Participation> participations = new ArrayList<>();
 	
 	public String getUsername() {
 		return username;
@@ -66,23 +67,11 @@ public class User extends Model {
 	public void setDeactivated(boolean deleted) {
 		this.deactivated = deleted;
 	}
-	public int getBattleCredits() {
-		return battleCredits;
+	public List<Participation> getParticipations() {
+		return participations;
 	}
-	public void setBattleCredits(int battleCredits) {
-		this.battleCredits = battleCredits;
-	}
-	public int getTotalKills() {
-		return totalKills;
-	}
-	public void setTotalKills(int totalKills) {
-		this.totalKills = totalKills;
-	}
-	public int getTotalDeaths() {
-		return totalDeaths;
-	}
-	public void setTotalDeaths(int totalDeaths) {
-		this.totalDeaths = totalDeaths;
+	public void setParticipations(List<Participation> participations) {
+		this.participations = participations;
 	}
 	
 }

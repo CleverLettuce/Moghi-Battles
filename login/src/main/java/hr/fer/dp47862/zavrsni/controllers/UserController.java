@@ -1,11 +1,17 @@
 package hr.fer.dp47862.zavrsni.controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.net.ssl.SSLEngineResult.Status;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import hr.fer.dp47862.zavrsni.models.Participation;
 import hr.fer.dp47862.zavrsni.models.User;
 import hr.fer.dp47862.zavrsni.response.Response;
 import hr.fer.dp47862.zavrsni.response.ResponseUtils;
@@ -16,10 +22,15 @@ import hr.fer.dp47862.zavrsni.utils.HashUtils;
 @RestController
 public class UserController {
 	
-	@Autowired UserService userService;
+	@Autowired private UserService userService;
 	
 	public static final int MIN_PASS_LENGTH = 8;
 	public static final int MIN_USERNAME_LENGTH = 3;
+	
+	public class UserScore{
+		public String user;
+		public int score;
+	}
 	
 	@RequestMapping(value = "/user", method = RequestMethod.POST)
     public Response<User> register(
@@ -84,6 +95,22 @@ public class UserController {
 		}
 		
 		return ResponseUtils.userResponse(StatusCodes.OK, userSearched, !userSearched.equals(userCurrent));
+	}
+	
+	@RequestMapping(value = "/scores", method = RequestMethod.GET)
+	public Response<List<UserScore>> userScores(){
+		List<User> users = userService.getAllUsers();
+		List<UserScore> userScores = new ArrayList<>();
+		for (User user : users){
+			UserScore userScore = new UserScore();
+			userScore.user = user.getUsername();
+			userScore.score = 0;
+			List<Participation> participations = userService.getParticipations(user);
+			participations.forEach((part) -> userScore.score += part.getScore());
+			userScores.add(userScore);
+		}
+		
+		return ResponseUtils.getResponse(StatusCodes.OK, userScores);
 	}
 
 	private boolean checkEmail(String email) {

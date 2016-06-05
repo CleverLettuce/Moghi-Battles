@@ -9,8 +9,8 @@ import hr.fer.dp47862.zavrsni.models.User;
 
 public class AESTokenManager implements TokenManager{
 
-	private TokenDeserializer deserializer;
-	private TokenSerializer serializer;
+	private AESTokenDeserializer deserializer;
+	private AESTokenSerializer serializer;
 	
 	public AESTokenManager(Key key, int duration) {
 		deserializer = new AESTokenDeserializer(key);

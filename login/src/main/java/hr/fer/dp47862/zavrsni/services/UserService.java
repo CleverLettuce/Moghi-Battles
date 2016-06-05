@@ -1,10 +1,13 @@
 package hr.fer.dp47862.zavrsni.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import hr.fer.dp47862.zavrsni.dao.DAO;
+import hr.fer.dp47862.zavrsni.models.Participation;
 import hr.fer.dp47862.zavrsni.models.User;
 import hr.fer.dp47862.zavrsni.token.ExpiredTokenException;
 import hr.fer.dp47862.zavrsni.token.InvalidTokenException;
@@ -74,6 +77,14 @@ public class UserService {
 		}
 		
 		return user;
+	}
+	
+	public List<Participation> getParticipations(User user){
+		return dao.getParticipations(user);
+	}
+	
+	public List<User> getAllUsers(){
+		return dao.getAllUsers();
 	}
 
 }

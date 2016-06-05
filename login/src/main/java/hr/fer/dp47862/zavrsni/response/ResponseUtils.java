@@ -31,11 +31,13 @@ public class ResponseUtils {
 		user.setEmail(null);
 		user.setTimeUpdated(null);
 		
+		
 		return user;
 	}
 	
 	public static User privateUser(User user){
 		user.setPasswordHash(null);
+		user.setParticipations(null);
 		return user;
 	}
 	

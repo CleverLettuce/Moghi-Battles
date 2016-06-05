@@ -9,7 +9,9 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import hr.fer.dp47862.zavrsni.dao.DAO;
+import hr.fer.dp47862.zavrsni.models.Game;
 import hr.fer.dp47862.zavrsni.models.Model;
+import hr.fer.dp47862.zavrsni.models.Participation;
 import hr.fer.dp47862.zavrsni.models.User;
 
 public class HibernateDao implements DAO{
@@ -96,6 +98,60 @@ public class HibernateDao implements DAO{
 		session.close();
 		
 		return id;
+	}
+	
+	@Override
+	public void joinGame(User user, Game game, int teamId) {
+		Participation participation = new Participation();
+		participation.setGame(game);
+		participation.setUser(user);
+		participation.setTeamId(teamId);
+		persistModel(participation);
+	}
+
+	@Override
+	public void report(User user, Game game, int score, boolean winner) {
+		Participation part = getParticipation(user, game);
+		part.setScore(score);
+		part.setWinner(winner);
+		updateModel(part);
+	}
+
+	@Override
+	public Participation getParticipation(int id) {
+		return (Participation) sessionFactory
+		.getCurrentSession()
+		.byId(Participation.class)
+		.load(id);
+	}
+
+	@Override
+	public List<Participation> getParticipations(User user) {
+		List<Participation> participations = this.getUser(user.getUsername()).getParticipations();
+		if (!participations.isEmpty()){
+			// (ノಠ益ಠ)ノ彡┻━┻
+			participations.get(0);
+		}
+		
+		return this.getUser(user.getUsername()).getParticipations();
+	}
+
+	@Override
+	public int createGame(String mapName) {
+		Game game = new Game();
+		game.setMapName(mapName);
+		int gameId = saveModel(game);
+		return gameId;
+	}
+
+	@Override
+	public Participation getParticipation(User user, Game game) {
+		for (Participation part : getParticipations(user)){
+			if (part.getGame().equals(game)){
+				return part;
+			}
+		}
+		return null;
 	}
 
 }

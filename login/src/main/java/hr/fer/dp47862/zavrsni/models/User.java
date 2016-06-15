@@ -22,7 +22,7 @@ import javax.persistence.JoinColumn;
 @Table(name="users")
 @NamedQueries({
 	@NamedQuery(name=User.Q_USERNAME,query="select user from User as user where user.username=:" + User.Q_PARAM_USERNAME),
-	@NamedQuery(name=User.Q_EMAIL,query="select user from User as user where user.username=:" + User.Q_PARAM_EMAIL),
+	@NamedQuery(name=User.Q_EMAIL,query="select user from User as user where user.email=:" + User.Q_PARAM_EMAIL),
 	@NamedQuery(name=User.Q_ALL,query="select user from User as user")
 })
 public class User extends Model {

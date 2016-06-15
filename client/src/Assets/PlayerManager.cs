@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System;
+using System.Collections.Generic;
 
 public class PlayerManager : MonoBehaviour, IDamagable {
 
@@ -27,6 +28,7 @@ public class PlayerManager : MonoBehaviour, IDamagable {
     public Animator animator;
     public SkillManager skillManager;
     public GameObject[] myTeamSpawns;
+    public AudioClip takeDamageSound;
 
     public GameObject teamMarker;
 
@@ -43,7 +45,7 @@ public class PlayerManager : MonoBehaviour, IDamagable {
     {
         while (true)
         {
-            Debug.Log("Gold recover activated");
+            //Debug.Log("Gold recover activated");
             yield return new WaitForSeconds(goldRecoverSpeed);
             if (activateGoldTickUp)
             {
@@ -56,7 +58,7 @@ public class PlayerManager : MonoBehaviour, IDamagable {
 
     private float calcDamage(float opponentAttack)
     {
-        float damage = 10 * opponentAttack / defense * UnityEngine.Random.Range(0.75f, 1.25f);
+        float damage = opponentAttack * opponentAttack / defense;
         return damage;
     }
 
@@ -64,6 +66,14 @@ public class PlayerManager : MonoBehaviour, IDamagable {
     public void takeDamage(float opponentAttack, string playerName)
     {
         if (dead)
+        {
+            return;
+        }
+        if (takeDamageSound != null)
+        {
+            AudioSource.PlayClipAtPoint(takeDamageSound, transform.position, 1.0f);
+        }
+        if (!view.isMine)
         {
             return;
         }
@@ -118,7 +128,7 @@ public class PlayerManager : MonoBehaviour, IDamagable {
                 if (playerManager.username.Equals(playerName))
                 {
                     playerManager.view.RPC("incKills", PhotonTargets.All, new object[] { });
-                    playerManager.view.RPC("rewardGold", PhotonTargets.All, 10);
+                    playerManager.view.RPC("rewardGold", PhotonTargets.All, 10.0f);
                     break;
                 }
 

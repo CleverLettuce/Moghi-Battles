@@ -9,6 +9,7 @@ public class Util : MonoBehaviour {
         switch (mapName)
         {
             case "sacredforest": decoded = "Sacred Forest"; break;
+            case "desert": decoded = "The Desert"; break;
         }
 
         return decoded;

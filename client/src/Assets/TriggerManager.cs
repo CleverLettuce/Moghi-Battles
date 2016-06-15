@@ -41,7 +41,7 @@ public class TriggerManager : MonoBehaviour {
         IDamagable otherManager = other.transform.GetComponent<IDamagable>();
         if (otherManager != null)
         {
-            Debug.Log("Object exited trigger.");
+            //Debug.Log("Object exited trigger.");
             lock (objectsInTrigger) objectsInTrigger.Remove(otherManager);
         }
     }

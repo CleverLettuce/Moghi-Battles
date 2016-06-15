@@ -2,6 +2,8 @@
 using UnityStandardAssets.ImageEffects;
 using System.Collections.Generic;
 using ExitGames.Client.Photon;
+using System;
+using System.Collections;
 
 public class SpawnManager : MonoBehaviour {
 
@@ -23,6 +25,11 @@ public class SpawnManager : MonoBehaviour {
 	
 	}
 
+    public class JoinResponse
+    {
+        public int status;
+    }
+
     public void SpawnRandom (string username)
     {
         Debug.Log("Spawning player: " + username);
@@ -40,7 +47,7 @@ public class SpawnManager : MonoBehaviour {
 
         if (redTeamPlayers == blueTeamPlayers)
         {
-            int selector = Random.Range(1, 3);
+            int selector = UnityEngine.Random.Range(1, 3);
             GameObject[] spawnSpots;
             if (selector == 1)
             {
@@ -82,7 +89,7 @@ public class SpawnManager : MonoBehaviour {
             dof.focalTransform = player.transform;
         }
         player.layer = 8;
-        Hashtable playerTeamHashTable = new Hashtable();
+        ExitGames.Client.Photon.Hashtable playerTeamHashTable = new ExitGames.Client.Photon.Hashtable();
         playerTeamHashTable["teamId"] = teamId;
         PhotonNetwork.player.SetCustomProperties(playerTeamHashTable);
         Debug.Log("Player team: " + PhotonNetwork.player.customProperties["teamId"]);
@@ -92,10 +99,33 @@ public class SpawnManager : MonoBehaviour {
         playerManager.teamId = teamId;
         //player.transform.FindChild("PlayerCamera").gameObject.SetActive(true);
         photonView.RPC("addPlayerToTeam", PhotonTargets.AllBuffered, teamId);
+        StartCoroutine(participate(teamId));
+    }
+
+    private IEnumerator participate(int teamId)
+    {
+        int gameId = (int)PhotonNetwork.room.customProperties["gameId"];
+        WWWForm partForm = new WWWForm();
+        partForm.AddField("gameId", gameId);
+        partForm.AddField("teamId", teamId);
+        partForm.AddField("token", LoginManager.getToken());
+        WWW join = new WWW(DataServerDomain.url + "join", partForm.data);
+        yield return join;
+        JoinResponse response = JsonUtility.FromJson<JoinResponse>(join.text);
+        if (response.status != 200)
+        {
+            Debug.LogError("Failed to join game");
+            PhotonNetwork.Disconnect();
+            LoginManager.clear();
+        } else
+        {
+            Debug.Log("Joined game with gameId:" + gameId);
+        }
+
     }
 
     private GameObject selectSpawnSpot(GameObject[] spawnSpots)
     {
-        return spawnSpots[Random.Range(0, spawnSpots.Length)];
+        return spawnSpots[UnityEngine.Random.Range(0, spawnSpots.Length)];
     }
 }

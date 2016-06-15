@@ -34,7 +34,10 @@ public class SkillBarManager : Photon.MonoBehaviour {
                         goldCounterTextObject.GetComponent<GoldCounterManager>().playerManager = player;
                     }
                 }
-
+                if (this.player == null)
+                {
+                    continue;
+                }
 
                 GameObject skillCDIconPrototype = (GameObject)Resources.Load("SkillCDIcon");
 
@@ -57,10 +60,18 @@ public class SkillBarManager : Photon.MonoBehaviour {
                 Skill skill = skillCDIcon.skill;
                 if (skill.isOnCD() || playerManager.gold < skill.goldCost)
                 {
-                    float elapsedTime = Time.time - skill.getLastFired();
-                    int cdCount = Mathf.RoundToInt(skill.cooldown - elapsedTime);
-                    skillCDIcon.dim();
-                    skillCDIcon.setText("" + cdCount);
+                    if (skill.isOnCD())
+                    {
+                        float elapsedTime = Time.time - skill.getLastFired();
+                        int cdCount = Mathf.RoundToInt(skill.cooldown - elapsedTime);
+                        skillCDIcon.dim();
+                        skillCDIcon.setText("" + cdCount);
+                    } else
+                    {
+                        skillCDIcon.dim();
+                        skillCDIcon.setText("G");
+                    }
+                    
                 }
                 else
                 {

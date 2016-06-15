@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class TeamManager : MonoBehaviour {
 
@@ -22,6 +23,30 @@ public class TeamManager : MonoBehaviour {
     void Start()
     {
         StartCoroutine(assignMarkers());
+        StartCoroutine(updateKills());
+    }
+
+    private IEnumerator updateKills()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(0.3f);
+            redTeamKills = 0;
+            blueTeamKills = 0;
+            PlayerManager[] players = FindObjectsOfType<PlayerManager>();
+            foreach (PlayerManager player in players)
+            {
+                if (player.teamId == blueTeamId)
+                {
+                    blueTeamKills += player.kills;
+                }
+                if (player.teamId == redTeamId)
+                {
+                    redTeamKills += player.kills;
+                }
+            }
+        }
+        
     }
 
     [PunRPC]

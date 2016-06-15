@@ -36,6 +36,7 @@ public class ControlManager : MonoBehaviour {
     void OnDisconnectedFromPhoton()
     {
         if (!SceneManager.GetActiveScene().name.Equals("loginScene")){
+            LobbyManager.inLobbyScene = false;
             SceneManager.LoadScene("loginScene");
         }
         

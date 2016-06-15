@@ -27,8 +27,8 @@ public class MapManager : Photon.MonoBehaviour {
         if (requireSpawn)
         {
             requireSpawn = false;
-            //teamManager.refresh();
             spawnManager.SpawnRandom(PhotonNetwork.player.name);
+            
         }
 
         if (battleManager.winner != 0)

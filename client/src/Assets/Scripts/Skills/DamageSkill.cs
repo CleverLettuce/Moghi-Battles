@@ -69,7 +69,7 @@ public class DamageSkill : Skill {
             {
                 if (!obj.isDead())
                 {
-                    view.RPC("takeDamage", PhotonTargets.All, myManager.attack * effect.damageModifier, myManager.username);
+                    view.RPC("takeDamage", PhotonTargets.AllViaServer, myManager.attack * effect.damageModifier * UnityEngine.Random.Range(0.75f, 1.25f), myManager.username);
                 }
             }
         }

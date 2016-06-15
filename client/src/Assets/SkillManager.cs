@@ -6,6 +6,7 @@ using System;
 public class SkillManager : MonoBehaviour {
 
     private Animator animator;
+    public bool disableInput;
 
     [Serializable]
     public class SkillActivation
@@ -52,6 +53,10 @@ public class SkillManager : MonoBehaviour {
         {
             return;
         }
+        if (disableInput)
+        {
+            return;
+        }
         foreach (SkillActivation activation in skills)
         {
             if (!Input.GetKey(activation.keyCode))
@@ -59,13 +64,14 @@ public class SkillManager : MonoBehaviour {
                 continue;
             }
 
-            Debug.Log("Activation: " + activation.keyCode);
+            //Debug.Log("Activation: " + activation.keyCode);
 
             if (activation.skill.getLastFired() +  activation.skill.getCooldown() > Time.time || player.gold < activation.skill.goldCost)
             {
                 return;
             }
 
+            player.gold -= activation.skill.goldCost;
             currentSkill = activation.skill.getName();
             currentSkillActivation = activation;
             skillLauncher.waitingForServerResponse = true;

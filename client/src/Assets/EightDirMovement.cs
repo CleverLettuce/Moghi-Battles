@@ -8,6 +8,7 @@ public class EightDirMovement : ISpeedProvider {
     public float currentSpeed;
     public float turnSpeed;
     public float gravity = 9.81f;
+    public bool disableInput = false;
     public KeyCode upKey = KeyCode.W;
     public KeyCode downKey = KeyCode.S;
     public KeyCode leftKey = KeyCode.A;
@@ -94,7 +95,11 @@ public class EightDirMovement : ISpeedProvider {
 
     private void updateMovement()
     {
-        
+        if (disableInput)
+        {
+            return;
+        }
+
         Vector3 direction = Vector3.zero;
 
         if (Input.GetKey(upKey) == true)

@@ -30,6 +30,7 @@ public class LoginManager : MonoBehaviour {
         passwordInput = passwordObject.GetComponent<InputField>();
     }
 
+
     public void TryConnect()
     {
         errorText.text = "";

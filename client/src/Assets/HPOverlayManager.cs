@@ -76,16 +76,22 @@ public class HPOverlayManager : MonoBehaviour {
         foreach (GameObject target in targets)
         {
             IDamagable damagable = target.GetComponent<IDamagable>();
+            RectTransform healthBar = getHealthBar(damagable);
             if (damagable == null || damagable.getHealth() <= 0.0f || damagable.getHealth() == damagable.getMaxHealth())
             {
-                seenDamagables.Remove(damagable);
+                healthBar.gameObject.SetActive(false);
                 continue;
             }
-            seenDamagables.Add(damagable);
             Vector3 targetPos = target.transform.position;
             Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(camera, targetPos);
 
-            RectTransform healthBar = getHealthBar(damagable);
+            if (damagable.getHealth() == damagable.getMaxHealth())
+            {
+                healthBar.gameObject.SetActive(false);
+            } else
+            {
+                healthBar.gameObject.SetActive(true);
+            }
             healthBar.anchoredPosition = screenPos - canvasRect.sizeDelta / 2f + new Vector2(0, healthBarHoverTargets);
             Slider slider = healthBar.GetComponentInChildren<Slider>();
             slider.normalizedValue = damagable.getHealth() / damagable.getMaxHealth();
@@ -98,19 +104,6 @@ public class HPOverlayManager : MonoBehaviour {
 
     private void cleanHealthbars()
     {
-
-        foreach (KeyValuePair<IDamagable, GameObject> kvp in healthBars)
-        {
-            if (!seenDamagables.Contains(kvp.Key))
-            {
-                if (kvp.Value.activeSelf)
-                {
-                    kvp.Value.SetActive(false);
-                    Debug.LogError("Found inactive damagable, deactivating healthbar...");
-                }
-              
-            }
-        }
 
         List<string> toRemove = new List<string>();
         foreach(KeyValuePair<string, GameObject> kvp in playerHealthBars)

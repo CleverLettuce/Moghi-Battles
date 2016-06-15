@@ -17,6 +17,7 @@ public class PickUpManager : Photon.MonoBehaviour {
 
     void Start()
     {
+        infoTextObject = GameObject.Find("InfoText");
         text = infoTextObject.GetComponent<Text>();
         triggerManager = transform.GetComponent<TriggerManager>();
     }
@@ -46,22 +47,21 @@ public class PickUpManager : Photon.MonoBehaviour {
         }
         if (distToPlayer < pickUpDistance)
         {
-            text.text = "Press " + pickUpKey + " to pick this up!";
             if (Input.GetKeyUp(pickUpKey))
             {
                 text.text = "";
                 pickedUp = true;
                 GameObject pickUpInstance = Instantiate(pickUpItem);
                 pickUpInstance.transform.SetParent(me.transform);
+                BuffManager bManager = pickUpInstance.GetComponent<BuffManager>();
+                bManager.player = me;
+                bManager.speedProvider = me.transform.GetComponent<EightDirMovement>();
                 if (pickUpSound != null)
                 {
                     AudioSource.PlayClipAtPoint(pickUpSound, transform.position);
                 }
                 photonView.RPC("pickUpNotify", PhotonTargets.AllBuffered);
             }
-        } else
-        {
-            text.text = "";
         }
         
 	}

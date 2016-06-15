@@ -19,6 +19,7 @@ public class WallManager : Photon.MonoBehaviour, IDamagable {
     private float receivedHealth;
     public float positionLerpSpeed;
     public float goldReward = 10;
+    public AudioClip takeDamageSound;
 
     void Start()
     {
@@ -75,7 +76,16 @@ public class WallManager : Photon.MonoBehaviour, IDamagable {
         {
             return;
         }
-        health -= opponentAttack * Random.Range(0.75f, 1.25f);
+        if (takeDamageSound != null)
+        {
+            AudioSource.PlayClipAtPoint(takeDamageSound, transform.position);
+        }
+
+        if (!PhotonNetwork.isMasterClient)
+        {
+            return;
+        }
+        health -= opponentAttack;
         if (health <= 0)
         {
             dead = true;
@@ -84,7 +94,7 @@ public class WallManager : Photon.MonoBehaviour, IDamagable {
             {
                 if (player.username.Equals(playerName))
                 {
-                    player.view.RPC("rewardGold", PhotonTargets.All, goldReward);
+                    player.view.RPC("rewardGold", PhotonTargets.AllViaServer, goldReward);
                 }
             }
         }

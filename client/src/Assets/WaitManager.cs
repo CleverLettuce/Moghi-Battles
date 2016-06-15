@@ -15,6 +15,7 @@ public class WaitManager : MonoBehaviour {
 
         teamManager = gameController.GetComponent<TeamManager>();
         mapManager = gameController.GetComponent<MapManager>();
+        StartCoroutine(checkPlayerCount());
     }
 	
 	// Update is called once per frame
@@ -24,29 +25,34 @@ public class WaitManager : MonoBehaviour {
             return;
         }
 
-        StartCoroutine(checkPlayerCount());
+        
 	}
 
     IEnumerator checkPlayerCount()
     {
-        PlayerManager[] players = FindObjectsOfType<PlayerManager>();
-        HashSet<string> playerSet = new HashSet<string>();
-        foreach (PlayerManager player in players)
+        while (true)
         {
-            if (player.username == "")
+            PlayerManager[] players = FindObjectsOfType<PlayerManager>();
+            HashSet<string> playerSet = new HashSet<string>();
+            foreach (PlayerManager player in players)
             {
-                continue;
+                if (player.username == "")
+                {
+                    continue;
+                }
+                playerSet.Add(player.username);
             }
-            playerSet.Add(player.username);
-        }
 
-        if (PhotonNetwork.room != null && PhotonNetwork.room.playerCount >= requiredPlayers && playerSet.Count >= requiredPlayers)
-        {
-            Debug.Log("Calling advance");
-            mapManager.advance();
-            waitPanel.SetActive(false);
-        }
+            if (PhotonNetwork.room != null && PhotonNetwork.room.playerCount >= requiredPlayers && playerSet.Count >= requiredPlayers)
+            {
+                Debug.Log("Calling advance");
+                mapManager.advance();
+                waitPanel.SetActive(false);
+                break;
+            }
 
-        yield return new WaitForSeconds(0.3f);
+            yield return new WaitForSeconds(0.3f);
+        }
+        
     }
 }

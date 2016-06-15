@@ -12,9 +12,18 @@ public class LobbyManager : MonoBehaviour {
     public GameObject errorTextObject;
     private Text errorText;
     public static bool inLobbyScene;
+    public bool gameFailed = false;
+    public static int gameId = -1;
+
+    public class GameResponse
+    {
+        public int status;
+        public int data;
+    }
 
 	// Use this for initialization
 	void Start () {
+        gameId = -1;
         inLobbyScene = true;
         errorText = errorTextObject.GetComponent<Text>();
         errorPanel.SetActive(false);
@@ -117,6 +126,7 @@ public class LobbyManager : MonoBehaviour {
         Room room = PhotonNetwork.room;
         room.visible = true;
         object extractor;
+        bool newlyCreated = false;
 
         string mapName;
         if (!room.customProperties.TryGetValue("mapName", out extractor))
@@ -142,9 +152,39 @@ public class LobbyManager : MonoBehaviour {
             }
         }
 
-        PhotonNetwork.playerName = username;
+        StartCoroutine(publishOrJoinGame(mapName, !PhotonNetwork.room.customProperties.TryGetValue("gameId", out extractor)));
+
+    }
+
+    private IEnumerator publishOrJoinGame(string mapName, bool newlyCreated)
+    {
+
+        if(newlyCreated){
+            WWWForm gameForm = new WWWForm();
+            gameForm.AddField("token", LoginManager.getToken());
+            gameForm.AddField("mapName", mapName);
+            WWW game = new WWW(DataServerDomain.url + "create", gameForm.data);
+            yield return game;
+            GameResponse response = JsonUtility.FromJson<GameResponse>(game.text);
+            if (response.status != 200)
+            {
+                Debug.Log(response.status);
+                PhotonNetwork.Disconnect();
+                yield return null;
+            }
+            else
+            {
+                gameFailed = false;
+                ExitGames.Client.Photon.Hashtable gameIdTable = new ExitGames.Client.Photon.Hashtable();
+                gameIdTable.Add("gameId", response.data);
+                PhotonNetwork.room.SetCustomProperties(gameIdTable);
+            }
+        }
+
+        PhotonNetwork.playerName = LoginManager.getUsername();
         inLobbyScene = false;
         PhotonNetwork.LoadLevel(mapName);
+
     }
 
     void OnLeftRoom()
@@ -185,14 +225,18 @@ public class LobbyManager : MonoBehaviour {
         Debug.Log("player name: " + PhotonNetwork.player.name);
         RoomOptions options = new RoomOptions();
         ExitGames.Client.Photon.Hashtable initProps = new ExitGames.Client.Photon.Hashtable();
-        switch (RoomCreator.mapName)
+        switch (MapSelectionManager.mapName)
         {
             case "sacredforest": options.maxPlayers = 6;
                 initProps.Add("mapName", "sacredforest");
                 initProps.Add("players", new string[6] { "", "", "", "", "", "" });
                 break;
+            case "desert":
+                options.maxPlayers = 6;
+                initProps.Add("mapName", "desert");
+                initProps.Add("players", new string[6] { "", "", "", "", "", "" });
+                break;
         }
-        
 
         options.customRoomProperties = initProps;
         options.customRoomPropertiesForLobby = new string[] { "mapName", "players" };
@@ -203,5 +247,15 @@ public class LobbyManager : MonoBehaviour {
     public void openHeroSelection()
     {
         SceneManager.LoadScene("heroSelectionScene");
+    }
+
+    public void openMapSelection()
+    {
+        SceneManager.LoadScene("mapSelectionScene");
+    }
+
+    public void toLadders()
+    {
+        SceneManager.LoadScene("highscoreScene");
     }
 }

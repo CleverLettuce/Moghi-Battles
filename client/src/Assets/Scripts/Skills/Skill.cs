@@ -41,7 +41,7 @@ public abstract class Skill : MonoBehaviour, ISkill {
 
     public void fire()
     {
-        Debug.Log("Skill " + skillName + " activated");
+        //Debug.Log("Skill " + skillName + " activated");
         skillFiring = true;
         skillElapsedTime = 0.0f;
         lastFired = Time.time;

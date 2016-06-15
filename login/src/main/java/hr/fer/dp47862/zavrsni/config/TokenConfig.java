@@ -26,7 +26,7 @@ public class TokenConfig {
 	private Environment env;
 	
 	private static final String P_DURATION = "duration";
-	private static final int DEFAULT_DURATION = 60000;
+	private static final int DEFAULT_DURATION = 86400000;
 	
 	@Bean(name = "duration")
 	public int getDuration(){

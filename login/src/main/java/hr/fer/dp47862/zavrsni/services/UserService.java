@@ -46,6 +46,7 @@ public class UserService {
 		try{
 			return tokenManager.getUser(token);
 		} catch (Exception e){
+			e.printStackTrace();
 			return null;
 		}
 	}

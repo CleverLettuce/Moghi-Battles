@@ -1,9 +1,15 @@
-# zavrsni
+# Moghi Battles
 
-<h1>Završni rad</h1>
+Moghi Battles is a prototype of a MOBA game developed as a part of my Bachelor's Thesis. The game fetures two heroes with different skills and two maps. The game client is made in Unity while the login server is made in Spring. Photon Cloud service is used as lobby and game server. This repository doesn't contain any third-party assets used in the development of the game, only the implementation of the login server and C# scripts written by me.
+
+<h1>Information about my Bachelor's Thesis</h1>
 <br><br>
-<b>Domagoj Polančec</b> 0036478623<br>
+<b>Student:</b> Domagoj Polančec<br>
 <b>Mentor:</b> Igor Mekterović<br>
-<b>Ustanova:</b> Fakultet elektrotehnike i računarstva<br>
-<b>Tema:</b> Razvoj MOBA igara pomoću radnog okvira Unity<br><br>
-<b>Opis teme:</b> <br>MOBA (eng. Multiplayer online battle arena) igre su žanr video igara za više korisnika koje se igraju u stvarnom vremenu u kojoj igrač kontrolira jedan lik u jednom od dva tima. Timovi se međusobno natječu u ispunjavanju zadanih ciljeva od kojih je često jedan i glavni cilj koji, kad ga jedan od timova ispuni - pobjeđuje. Potrebno je napraviti pregled vodećih programskih paketa za razvoj igara s naglaskom na Unity. Opisati tipičan proces razvoja MOBA igara, uobičajene komponente i arhitekturu sustava, proučiti mehanizme sinkronizacije igrača prilikom zajedničke igre. Osmisliti i razviti prototip MOBA igre koristeći Unity programski paket koja bi sadržavala nekoliko različitih likova s kojima igrači mogu igrati dvije ili tri mape s različitim ciljevima. Likovi bi imali do pet vještina različitih efekata koje bi mogli koristiti (sve ukupno do 25 vještina u igri). Igra se oslanja na dva poslužitelja: poslužitelj podataka koji služi za autentifikaciju korisnika, upravljanje korisničkim podatcima i sl. (podatci se pohranjuju u bazi podatka) i poslužitelja same igre koji služi kao potpora u raznim fazama igre (predvorje, sobe, siknronizacija za vrijeme igre, itd.). Uz otisnuti primjerak rada priložiti optički disk s izgrađenom programskom potporom u izvornom i izvršnom obliku, te tekstom rada.
+<b>Higher education institution:</b> University of Zagreb, Faculty of Electrical Engineering and Computing<br>
+<b>Title:</b> Developing MOBA games using the Unity framework<br><br>
+<b>Keywords:</b> MOBA, Unity, network games<br><br>
+<b>Summary:</b><br>
+MOBA games are one of the most popular video game genres. As a part of this work, a MOBA game prototype called „Moghi Battles“ was implemented. The game retains most of the main features of the modern MOBA games such as heroes, skills, team competition, varied maps and defensive structures. One feature that isn't present are computer controlled units also known as „creeps“. The game client is implemented using a game engine called Unity and Photon Unity Networking framework. The data server is implemented using Spring Framework. In addition to the implementation of the game, the work consists of a theoretical part in which the architecture and synchronization mechanisms of network games are discussed.
+
+

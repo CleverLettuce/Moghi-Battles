@@ -3,7 +3,7 @@
 Moghi Battles is a prototype of a MOBA game developed as a part of my Bachelor's Thesis. The game fetures two heroes with different skills and two maps. The game client is made in Unity while the login server is made in Spring. Photon Cloud service is used as lobby and game server. This repository doesn't contain any third-party assets used in the development of the game, only the implementation of the login server and C# scripts written by me.
 
 <h1>Gameplay video (click on image to view on YouTube)</h1>
-![Moghi Battles Gameplay](http://img.youtube.com/vi/zMOADfahpu8/0.jpg)
+![Moghi Battles Gameplay]{http://img.youtube.com/vi/zMOADfahpu8/0.jpg}
 
 <h1>Information about my Bachelor's Thesis</h1>
 <b>Student:</b> Domagoj Polančec<br>
